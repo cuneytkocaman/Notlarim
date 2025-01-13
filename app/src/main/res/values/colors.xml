@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="app">#c8c8c8</color>
+    <color name="fab_bt">#F6945A</color>
+    <color name="alert">#F6945A</color>
+    <color name="icon">#ffffff</color>
+    <color name="text1">#000835</color>
+    <color name="text2">#430505</color>
+    <color name="delete">#B32121</color>
+    <color name="title">#0083BC</color>
+</resources>

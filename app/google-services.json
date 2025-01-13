@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475073345080",
+    "project_id": "notlarim-59ada",
+    "storage_bucket": "notlarim-59ada.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475073345080:android:7f741e5cf8e2f3ae7cd8cd",
+        "android_client_info": {
+          "package_name": "com.cuneyt.notlarim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMR3h1tvWAdZout6SruxR-PkEDiDiqYwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
