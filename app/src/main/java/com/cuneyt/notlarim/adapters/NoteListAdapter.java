@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cuneyt.notlarim.MainActivity2;
 import com.cuneyt.notlarim.R;
 import com.cuneyt.notlarim.entities.NoteModel;
 import com.cuneyt.notlarim.fragments.ListingFragment;
@@ -29,17 +30,21 @@ import java.util.ArrayList;
 import java.util.ListResourceBundle;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyViewHolder> {
-
-    private ArrayList<NoteModel> noteModelArrayList;
     private Context mContext;
+    private ArrayList<NoteModel> noteModelArrayList;
+
+
+    /*public NoteListAdapter(ArrayList<NoteModel> noteModelArrayList) {
+        this.noteModelArrayList = noteModelArrayList;
+    }*/
 
     public NoteListAdapter(ArrayList<NoteModel> noteModelArrayList) {
         this.noteModelArrayList = noteModelArrayList;
     }
 
-    public NoteListAdapter(ArrayList<NoteModel> noteModelArrayList, Context mContext) {
-        this.noteModelArrayList = noteModelArrayList;
+    public NoteListAdapter(Context mContext, ArrayList<NoteModel> noteModelArrayList) {
         this.mContext = mContext;
+        this.noteModelArrayList = noteModelArrayList;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -87,7 +92,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
                 pass.getDate();
                 pass.getAddOrUpdate();
                 Navigation.findNavController(v).navigate(pass);
-                
             }
         });
     }

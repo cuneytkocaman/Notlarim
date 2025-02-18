@@ -1,12 +1,19 @@
 package com.cuneyt.notlarim.fragments;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -42,8 +49,15 @@ public class ListingFragment extends Fragment {
     private DatabaseReference referenceNote;
     private NoteListAdapter noteListAdapter;
     private ArrayList<NoteModel> noteModelArrayList = new ArrayList<>();
-    private FloatingActionButton fabNoteAdd, fabListAdd;
+    private FloatingActionButton fabNoteAdd, fabTodoAdd;
     private RecyclerView rvNoteList;
+    private Context mContext;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +65,7 @@ public class ListingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_listing, container, false);
 
         fabNoteAdd = view.findViewById(R.id.fabNoteAdd);
-        fabListAdd = view.findViewById(R.id.fabListAdd);
+        fabTodoAdd = view.findViewById(R.id.fabTodoAdd);
         rvNoteList = view.findViewById(R.id.rvNoteList);
 
         referenceNote = FirebaseDatabase.getInstance().getReference(requireContext().getResources().getString(R.string.db_note));
@@ -67,10 +81,11 @@ public class ListingFragment extends Fragment {
                 pass.getDate();
                 pass.getAddOrUpdate();
                 Navigation.findNavController(view).navigate(pass);
+
             }
         });
 
-        fabListAdd.setOnClickListener(new View.OnClickListener() {
+        /*fabTodoAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -103,7 +118,7 @@ public class ListingFragment extends Fragment {
                     }
                 });
             }
-        });
+        });*/
 
         show();
 
@@ -262,15 +277,14 @@ public class ListingFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy < 0) {
                     fabNoteAdd.show();
-                    fabListAdd.show();
+                    fabTodoAdd.show();
                 } else if (dy > 0) {
                     fabNoteAdd.hide();
-                    fabListAdd.hide();
+                    fabTodoAdd.hide();
                 }
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
-
 
 }
