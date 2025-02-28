@@ -82,6 +82,8 @@ public class ListingFragment extends Fragment {
                 pass.getAddOrUpdate();
                 Navigation.findNavController(view).navigate(pass);
 
+
+
             }
         });
 

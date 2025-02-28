@@ -8,9 +8,11 @@ plugins {
 buildscript {
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
         val nav_version = "2.8.4"
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+        classpath("gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.10.1")
     }
 }

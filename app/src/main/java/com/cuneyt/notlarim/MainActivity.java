@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,10 +29,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.Continue;
+import com.onesignal.OneSignal;
+import com.onesignal.debug.LogLevel;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String ONESIGNAL_APP_ID = "af0319ef-7c78-4cfe-9a8d-005897ad3af9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,18 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 
             notificationPermission();
+
+            OneSignal.initWithContext(this);
+
+            // Verbose Logging set to help debug issues, remove before releasing your app.
+            OneSignal.getDebug().setLogLevel(LogLevel.VERBOSE);
+
+            // OneSignal Initialization
+            OneSignal.initWithContext(this, ONESIGNAL_APP_ID);
+
+            // requestPermission will show the native Android notification permission prompt.
+            // NOTE: It's recommended to use a OneSignal In-App Message to prompt instead.
+            OneSignal.getNotifications().requestPermission(false, Continue.none());
 
             return insets;
         });

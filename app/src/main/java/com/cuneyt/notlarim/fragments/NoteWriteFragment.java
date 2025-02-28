@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.cuneyt.notlarim.MainActivity;
+import com.cuneyt.notlarim.MessageService;
 import com.cuneyt.notlarim.R;
 import com.cuneyt.notlarim.assistantclass.DateTime;
 import com.cuneyt.notlarim.assistantclass.RandomId;
@@ -40,6 +41,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.onesignal.Continue;
+import com.onesignal.OneSignal;
+import com.onesignal.debug.LogLevel;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -53,8 +61,8 @@ public class NoteWriteFragment extends Fragment {
     private DatabaseReference referenceNote;
     private NotificationCompat.Builder builder;
     private Context mContext;
-
     private static final String CHANNEL_ID = "1";
+    private MessageService messageService;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -83,6 +91,19 @@ public class NoteWriteFragment extends Fragment {
 
         NoteWriteFragmentArgs bundle = NoteWriteFragmentArgs.fromBundle(getArguments());
         String addUpd = bundle.getAddOrUpdate();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("note")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscribe failed";
+                        }
+
+                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         fabNoteSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +140,11 @@ public class NoteWriteFragment extends Fragment {
                 if (task.isSuccessful()) {
                     noteModel = new NoteModel(id, title, note, date, notification);
                     referenceNote.child(id).setValue(noteModel);
-                    sendNotification("eklendi");
+
+                    messageService = new MessageService();
+                    messageService.setContext(mContext);
+                //    sendNotification("eklendi");
+                    messageService.sendMessage(title, note);
 
                 } else {
                     Toast.makeText(requireContext(), "Not eklenemedi.", Toast.LENGTH_SHORT).show();
@@ -159,11 +184,10 @@ public class NoteWriteFragment extends Fragment {
 
                 referenceNote.child(currentlyId).updateChildren(updateNote);
 
-                sendNotification("güncellendi");
+                //sendNotification("güncellendi");
             }
         });
     }
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -177,7 +201,6 @@ public class NoteWriteFragment extends Fragment {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
     private void sendNotification(String noteRegulationInfo) {
 
         Intent intent = new Intent(mContext, MainActivity.class); // Bildirime tıklandığında açılacak sayfa
@@ -190,7 +213,7 @@ public class NoteWriteFragment extends Fragment {
                 .setContentText("' " + inputTitle.getText().toString() + " ' isimli not " + noteRegulationInfo)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent) // Tıklama davranışı.
-                .setAutoCancel(true); // Tıklnadığında bildirm silinsin.
+                .setAutoCancel(true); // Tıklnadığında bildirim silinsin.
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mContext);
 
@@ -208,4 +231,6 @@ public class NoteWriteFragment extends Fragment {
         }
         notificationManager.notify(1, builder.build());
     }
+
+
 }
